@@ -8,10 +8,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
-        /*List<PND> pndArrayList = DAO_PND.getDAO().getPND();
-        for (PND pnd : pndArrayList)
-            System.out.println(GsonUtil.getToGson().getGson(pnd));*/
-
-        new ServerHttp(8080);
+        new ServerHttp(8089);
     }
 }

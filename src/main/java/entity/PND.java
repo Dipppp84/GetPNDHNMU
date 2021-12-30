@@ -16,6 +16,6 @@ public class PND {
         this.numberGroup = numberGroup;
         this.nameTeacher = nameTeacher;
         this.numberPND = numberPND;
-        DateCreation = dateCreation;
+        this.DateCreation = dateCreation;
     }
 }

@@ -8,25 +8,23 @@ import utill.GsonUtil;
 
 import java.util.List;
 import java.util.Map;
-
 import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 
 public class PNDHandler extends RouterNanoHTTPD.DefaultHandler {
     @Override
     public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
         List<PND> pndArrayList = DAO_PND.getDAO().getPND();
-        NanoHTTPD.Response response = newFixedLengthResponse("qwertasd");
 
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:8080/");
-        response.addHeader("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept");
-        response.addHeader("Access-Control-Allow-Methods",
-                "GET, HEAD, PUT, POST, DELETE");
-        response.setChunkedTransfer(true);
-        System.out.println(response.getHeader("Access-Control-Allow-Origin"));
+        PND p = new PND(1, "", null, null, null, null, null);
+        NanoHTTPD.Response response = newFixedLengthResponse(GsonUtil.getToGson().getGson(pndArrayList));
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
+        response.addHeader("Access-Control-Max-Age", "3600");
+        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, origin, " +
+                "Content-Type, Accept");
+        response.setMimeType("application/json");
         return response;
     }
-
 
     @Override
     public NanoHTTPD.Response post(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {

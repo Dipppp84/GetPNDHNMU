@@ -28,7 +28,8 @@ public class DelPNDHandler extends RouterNanoHTTPD.DefaultHandler {
 
         if (!DAO_PND.getDAO().deletePND(id))
             return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Ошибка ДАО");
-        return newFixedLengthResponse("Удалено");
+
+        return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, null, null);
     }
 
     @Override
