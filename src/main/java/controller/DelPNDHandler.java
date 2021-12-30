@@ -16,10 +16,16 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 public class DelPNDHandler extends RouterNanoHTTPD.DefaultHandler {
     @Override
     public NanoHTTPD.Response delete(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
+        return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "");
+
+    }
+
+    @Override
+    public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
+
         List<String> param = session.getParameters().get("id");
         if (param == null)
             return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Пустой id"));
-
         Integer id = null;
         try {
             id = Integer.parseInt(param.get(0));
@@ -31,11 +37,6 @@ public class DelPNDHandler extends RouterNanoHTTPD.DefaultHandler {
             return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Ошибка ДАО"));
 
         return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.OK, null, null));
-    }
-
-    @Override
-    public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
-        return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "");
     }
 
     @Override

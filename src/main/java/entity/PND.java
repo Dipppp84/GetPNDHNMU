@@ -7,7 +7,7 @@ public class PND {
     private String numberGroup;
     private String nameTeacher;
     private String numberPND;
-    private String DateCreation;
+    private String dateCreation;
 
     public PND(Integer id, String abvD, String nameD, String numberGroup, String nameTeacher, String numberPND, String dateCreation) {
         this.id = id;
@@ -16,6 +16,6 @@ public class PND {
         this.numberGroup = numberGroup;
         this.nameTeacher = nameTeacher;
         this.numberPND = numberPND;
-        this.DateCreation = dateCreation;
+        this.dateCreation = dateCreation;
     }
 }

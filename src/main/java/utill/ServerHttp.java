@@ -27,7 +27,7 @@ public class ServerHttp extends RouterNanoHTTPD {
 
     public static NanoHTTPD.Response getCors(NanoHTTPD.Response response){
         response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
+        response.addHeader("Access-Control-Allow-Methods", "GET,DELETE");
         response.addHeader("Access-Control-Max-Age", "3600");
         response.addHeader("Access-Control-Allow-Headers", "x-requested-with, origin, " +
                 "Content-Type, Accept");
