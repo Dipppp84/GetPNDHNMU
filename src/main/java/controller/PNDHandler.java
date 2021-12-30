@@ -5,6 +5,7 @@ import entity.PND;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 import utill.GsonUtil;
+import utill.ServerHttp;
 
 import java.util.List;
 import java.util.Map;
@@ -16,14 +17,7 @@ public class PNDHandler extends RouterNanoHTTPD.DefaultHandler {
         List<PND> pndArrayList = DAO_PND.getDAO().getPND();
 
         PND p = new PND(1, "", null, null, null, null, null);
-        NanoHTTPD.Response response = newFixedLengthResponse(GsonUtil.getToGson().getGson(pndArrayList));
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
-        response.addHeader("Access-Control-Max-Age", "3600");
-        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, origin, " +
-                "Content-Type, Accept");
-        response.setMimeType("application/json");
-        return response;
+        return ServerHttp.getCors(newFixedLengthResponse(GsonUtil.getToGson().getGson(pndArrayList)));
     }
 
     @Override

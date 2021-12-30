@@ -5,6 +5,7 @@ import entity.PND;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 import utill.GsonUtil;
+import utill.ServerHttp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +18,19 @@ public class DelPNDHandler extends RouterNanoHTTPD.DefaultHandler {
     public NanoHTTPD.Response delete(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
         List<String> param = session.getParameters().get("id");
         if (param == null)
-            return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Пустой id");
+            return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Пустой id"));
 
         Integer id = null;
         try {
             id = Integer.parseInt(param.get(0));
         } catch (NumberFormatException e) {
-            return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "id != числу");
+            return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "id != числу"));
         }
 
         if (!DAO_PND.getDAO().deletePND(id))
-            return newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Ошибка ДАО");
+            return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Ошибка ДАО"));
 
-        return newFixedLengthResponse(NanoHTTPD.Response.Status.OK, null, null);
+        return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.OK, null, null));
     }
 
     @Override
