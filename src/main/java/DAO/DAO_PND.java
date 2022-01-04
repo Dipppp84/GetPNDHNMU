@@ -4,6 +4,7 @@ import entity.PND;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DAO_PND {
@@ -19,11 +20,11 @@ public class DAO_PND {
     }
 
     public List<PND> getPND() {
+        Date d1 = new Date();
         ArrayList<PND> pndList = new ArrayList<>();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
             PreparedStatement ps1 = c1.prepareStatement("SELECT t.STUSPR0, STUSPR1, STUSPR2, STUSPR4,STUSPR5, STUSPR6 FROM STUSPR t ORDER BY STUSPR6 DESC");
             ResultSet rs1 = ps1.executeQuery();
-
             while (rs1.next()) {
                 String nameD = null, abvD = null;
                 //Капаем до название дисциплины
@@ -56,7 +57,6 @@ public class DAO_PND {
 
                 //Название группы
                 String numberGroup = null;
-                ;
                 try (Connection c5 = DaoFactory.getDataSource().getConnection()) {
                     String STUSPR2 = rs1.getString("STUSPR2");
                     PreparedStatement ps5 = c5.prepareStatement("SELECT t.GR3, GR19, GR20, GR21, GR22, GR23, GR24 FROM GR t WHERE GR1 = ?");
@@ -98,8 +98,11 @@ public class DAO_PND {
 
                 pndList.add(new PND(id, abvD, nameD, numberGroup, nameTeacher, numberPND, dateCreation));
             }
+            Date d2 = new Date();
+            System.out.println(" / Затраченое время :" + (d2.getTime() - d1.getTime())  + "мс. ПНД Найдено :" + pndList.size());
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+            return null;
         }
         return pndList;
     }
@@ -109,6 +112,9 @@ public class DAO_PND {
             return false;
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
             PreparedStatement ps1 = c1.prepareStatement("DELETE FROM STUSPR WHERE STUSPR0 = ?");
+
+            System.out.println("Удаление " + id);
+
             ps1.setInt(1, id);
             ps1.execute();
         } catch (SQLException e) {

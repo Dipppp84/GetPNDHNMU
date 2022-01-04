@@ -7,10 +7,11 @@ import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
 
 import java.io.IOException;
+import java.net.BindException;
 
 //extends   NanoHTTPD
 public class ServerHttp extends RouterNanoHTTPD {
-    public ServerHttp(int port) throws IOException {
+    public ServerHttp(int port) throws IOException, BindException {
         super(port);
         addMappings();
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
@@ -25,7 +26,7 @@ public class ServerHttp extends RouterNanoHTTPD {
         addRoute("/delPND", DelPNDHandler.class);
     }
 
-    public static NanoHTTPD.Response getCors(NanoHTTPD.Response response){
+    public static NanoHTTPD.Response getCors(NanoHTTPD.Response response) {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET,DELETE");
         response.addHeader("Access-Control-Max-Age", "3600");

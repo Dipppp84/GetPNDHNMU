@@ -18,4 +18,17 @@ public class PND {
         this.numberPND = numberPND;
         this.dateCreation = dateCreation;
     }
+
+    @Override
+    public String toString() {
+        return "PND{" +
+                "id=" + id +
+                ", abvD='" + abvD + '\'' +
+                ", nameD='" + nameD + '\'' +
+                ", numberGroup='" + numberGroup + '\'' +
+                ", nameTeacher='" + nameTeacher + '\'' +
+                ", numberPND='" + numberPND + '\'' +
+                ", dateCreation='" + dateCreation + '\'' +
+                '}';
+    }
 }
