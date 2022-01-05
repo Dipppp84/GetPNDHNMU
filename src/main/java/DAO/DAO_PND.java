@@ -25,74 +25,56 @@ public class DAO_PND {
         ArrayList<PND> pndList = new ArrayList<>();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
             System.out.print("get PND ");
-            PreparedStatement ps1 = c1.prepareStatement("SELECT t.STUSPR0, STUSPR1, STUSPR2, STUSPR4,STUSPR5, STUSPR6 FROM STUSPR t ORDER BY STUSPR6 DESC");
+            PreparedStatement ps1 = c1.prepareStatement("SELECT t6.P3,\n" +
+                    "       P4,\n" +
+                    "       P5,\n" +
+                    "       t5.GR3,\n" +
+                    "       GR19,\n" +
+                    "       GR20,\n" +
+                    "       GR21,\n" +
+                    "       GR22,\n" +
+                    "       GR23,\n" +
+                    "       GR24,\n" +
+                    "       t4.D2,\n" +
+                    "       D3,\n" +
+                    "       t1.STUSPR0,\n" +
+                    "       STUSPR2,\n" +
+                    "       STUSPR4,\n" +
+                    "       STUSPR5,\n" +
+                    "       STUSPR6\n" +
+                    "FROM STUSPR t1\n" +
+                    "         JOIN US as t2 on t1.STUSPR1 = t2.US1\n" +
+                    "         JOIN UO as t3 on t2.US2 = t3.UO1\n" +
+                    "         JOIN D as t4 on t3.UO3 = t4.D1\n" +
+                    "         JOIN GR as t5 on t1.STUSPR2 = t5.GR1\n" +
+                    "         JOIN P as t6 on t1.STUSPR5 = t6.P1\n" +
+                    "ORDER BY STUSPR6 DESC\n");
             ResultSet rs1 = ps1.executeQuery();
             while (rs1.next()) {
-                String nameD = null, abvD = null;
-                //Капаем до название дисциплины
-                try (Connection c2 = DaoFactory.getDataSource().getConnection()) {
-                    String STUSPR1 = rs1.getString("STUSPR1");// начало копания дисциплины -> US2 -> UO3 ->D2,D3
-                    PreparedStatement ps2 = c2.prepareStatement("SELECT t.US2 FROM US t WHERE US1 = ?");
-                    ps2.setString(1, STUSPR1);
-                    ResultSet rs2 = ps2.executeQuery();
-                    while (rs2.next()) {
-                        String US2 = rs2.getString("US2");
-                        try (Connection c3 = DaoFactory.getDataSource().getConnection()) {
-                            PreparedStatement ps3 = c3.prepareStatement("SELECT t.UO3 FROM UO t WHERE UO1 = ?");
-                            ps3.setString(1, US2);
-                            ResultSet rs3 = ps3.executeQuery();
-                            while (rs3.next()) {
-                                String UO3 = rs3.getString("UO3");
-                                try (Connection c4 = DaoFactory.getDataSource().getConnection()) {
-                                    PreparedStatement ps4 = c4.prepareStatement("SELECT t.D2, D3 FROM D t WHERE D1 = ?");
-                                    ps4.setString(1, UO3);
-                                    ResultSet rs4 = ps4.executeQuery();
-                                    while (rs4.next()) {
-                                        nameD = rs4.getString("D2");
-                                        abvD = rs4.getString("D3");
-                                    }//while (rs4.next())
-                                }
-                            }//(rs3.next())
-                        }
-                    }//while (rs2.next()) {
-                }//Connection c2 = DaoFactory.getDataSource().getConnection()) Капаем до название дисциплины
+                //Название дисциплины
+                String nameD = rs1.getString("D2"),
+                        abvD = rs1.getString("D3");
 
                 //Название группы
                 String numberGroup = null;
-                try (Connection c5 = DaoFactory.getDataSource().getConnection()) {
-                    String STUSPR2 = rs1.getString("STUSPR2");
-                    PreparedStatement ps5 = c5.prepareStatement("SELECT t.GR3, GR19, GR20, GR21, GR22, GR23, GR24 FROM GR t WHERE GR1 = ?");
-                    ps5.setString(1, STUSPR2);
-                    ResultSet rs5 = ps5.executeQuery();
-                    while (rs5.next()) {
-                        numberGroup = rs5.getString("GR3");
-                        for (int i = 24; i > 18; i--) {
-                            String ng = rs5.getString("GR" + i);
-                            if (!ng.isEmpty())
-                                numberGroup = ng;
-                        }
-                    }
-                }// try (Connection c5 = DaoFactory.getDataSource().getConnection   Название группы
+                numberGroup = rs1.getString("GR3");
+                for (int i = 24; i > 18; i--) {
+                    String ng = rs1.getString("GR" + i);
+                    if (!ng.isEmpty())
+                        numberGroup = ng;
+                }
 
-                String nameTeacher = null;
                 //Ищем Преподавателя STUSPR5 -> p3,4,5
-                try (Connection c6 = DaoFactory.getDataSource().getConnection()) {
-                    String STUSPR5 = rs1.getString("STUSPR5");
-                    PreparedStatement ps6 = c6.prepareStatement("SELECT t.P3, P4, P5 FROM P t WHERE P1 = ?");
-                    ps6.setString(1, STUSPR5);
-                    ResultSet rs6 = ps6.executeQuery();
-                    while (rs6.next()) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(rs6.getString("P3"));
-                        String n = rs6.getString("P4");
-                        if (!n.isEmpty())
-                            sb.append(" " + n);
-                        String sn = rs6.getString("P5");
-                        if (!sn.isEmpty())
-                            sb.append(" " + sn);
-                        nameTeacher = sb.toString();
-                    }
-                }// try (Connection c6 = DaoFactory.getDataSource().getConnection   Ищем Преподавателя
+                String nameTeacher = null;
+                StringBuilder sb = new StringBuilder();
+                sb.append(rs1.getString("P3"));
+                String n = rs1.getString("P4");
+                if (!n.isEmpty())
+                    sb.append(" " + n);
+                String sn = rs1.getString("P5");
+                if (!sn.isEmpty())
+                    sb.append(" " + sn);
+                nameTeacher = sb.toString();
 
                 Integer id = rs1.getInt("STUSPR0");
                 String numberPND = rs1.getString("STUSPR4"),
@@ -101,7 +83,7 @@ public class DAO_PND {
                 pndList.add(new PND(id, abvD, nameD, numberGroup, nameTeacher, numberPND, dateCreation));
             }
             Date d2 = new Date();
-            System.out.println(" / Затраченое время :" + (d2.getTime() - d1.getTime())  + "мс. ПНД Найдено :" + pndList.size());
+            System.out.println(" / Затраченое время :" + (d2.getTime() - d1.getTime()) + "мс. ПНД Найдено :" + pndList.size());
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return null;
@@ -109,7 +91,7 @@ public class DAO_PND {
         return pndList;
     }
 
-    public boolean deletePND(Integer id){
+    public boolean deletePND(Integer id) {
         if (id == null)
             return false;
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
