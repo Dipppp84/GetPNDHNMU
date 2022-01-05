@@ -1,6 +1,7 @@
 package controller;
 
 import DAO.DAO_PND;
+import DAO.DaoFactory;
 import entity.PND;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.router.RouterNanoHTTPD;
@@ -137,7 +138,7 @@ public class PNDHandler extends RouterNanoHTTPD.DefaultHandler {
                 "</article>\n" +
                 "</main>\n" +
                 "<script>\n" +
-                "    const url = \"http://127.0.0.1:8089\";\n" +
+                "    const url = \"http://" + DaoFactory.IP + ":8089\";\n" +
                 "\n" +
                 "    async function getPND() {\n" +
                 "        const response = await fetch(url + \"/getPND\", {\n" +

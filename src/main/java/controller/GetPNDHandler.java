@@ -14,8 +14,7 @@ import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 public class GetPNDHandler extends RouterNanoHTTPD.DefaultHandler {
     @Override
     public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
-        List<PND> pndArrayList = DAO_PND.getDAO().getPND();
-        return ServerHttp.getCors(newFixedLengthResponse(GsonUtil.getToGson().getGson(pndArrayList)));
+        return ServerHttp.getCors(newFixedLengthResponse(GsonUtil.getToGson().getGson(DAO_PND.getDAO().getPND() )));
     }
 
     @Override

@@ -22,7 +22,6 @@ public class DelPNDHandler extends RouterNanoHTTPD.DefaultHandler {
 
     @Override
     public NanoHTTPD.Response get(RouterNanoHTTPD.UriResource uriResource, Map<String, String> urlParams, NanoHTTPD.IHTTPSession session) {
-
         List<String> param = session.getParameters().get("id");
         if (param == null)
             return ServerHttp.getCors(newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT, "Пустой id"));

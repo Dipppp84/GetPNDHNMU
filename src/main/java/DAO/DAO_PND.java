@@ -1,6 +1,7 @@
 package DAO;
 
 import entity.PND;
+import utill.ServerHttp;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class DAO_PND {
         Date d1 = new Date();
         ArrayList<PND> pndList = new ArrayList<>();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
+            System.out.print("get PND ");
             PreparedStatement ps1 = c1.prepareStatement("SELECT t.STUSPR0, STUSPR1, STUSPR2, STUSPR4,STUSPR5, STUSPR6 FROM STUSPR t ORDER BY STUSPR6 DESC");
             ResultSet rs1 = ps1.executeQuery();
             while (rs1.next()) {
@@ -111,12 +113,12 @@ public class DAO_PND {
         if (id == null)
             return false;
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
-            PreparedStatement ps1 = c1.prepareStatement("DELETE FROM STUSPR WHERE STUSPR0 = ?");
-
             System.out.println("Удаление " + id);
 
+            PreparedStatement ps1 = c1.prepareStatement("DELETE FROM STUSPR WHERE STUSPR0 = ?");
             ps1.setInt(1, id);
             ps1.execute();
+            System.out.print(", удалено.");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return false;
