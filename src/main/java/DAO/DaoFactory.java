@@ -10,10 +10,6 @@ public class DaoFactory {
 
     private volatile static DataSource dataSource;
 
-
-//    user 'MKP' password '17051945'; 192.168.128.200  192.168.128.200:3050
-//    user 'SYSDBA' password 'masterkey';localhost  CONNECT "C:\MKR_Base\BD" user 'PND' password '1098712857';
-
     public static String IP = "192.168.128.200"; // IP сервера белый или серый
     public synchronized static DataSource getDataSource(){
         if (dataSource == null){
