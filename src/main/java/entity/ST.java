@@ -19,9 +19,14 @@ public class ST {
         return id;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void addVirtGR(String s) {
         virtGR.add(s);
     }
+
 
     @Override
     public String toString() {

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 public class DAO_VirtGR {
     private volatile static DAO_VirtGR daoVirtGR;
@@ -25,9 +26,10 @@ public class DAO_VirtGR {
 
 
     public ArrayList<GR> getListAcademyGR(String nameGR) {
-        System.out.println("getListAcademyGR ");
+        Date d1 = new Date();
         ArrayList<GR> GRList = new ArrayList();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
+            System.out.println("getListAcademyGR ");
             PreparedStatement ps1 = c1.prepareStatement("SELECT GR1, GR19, GR20, GR21, GR22, GR23, GR24\n" +
                     "  FROM GR t\n" +
                     "  WHERE GR24 = " + nameGR + " or GR23 = " + nameGR + " or GR22 = " + nameGR +
@@ -42,14 +44,16 @@ public class DAO_VirtGR {
             System.out.println(e.getLocalizedMessage());
             return null;
         }
+        Date d2 = new Date();
+        System.out.println(" / Затраченое время :" + (d2.getTime() - d1.getTime()) + "мс. Груп найдено :" + GRList.size());
         return GRList;
     }
 
     public ArrayList<ST> getListVirtGRbyAcademyGr(int idGR) {
         Date d1 = new Date();
-        System.out.print("get getListVirtGRbyAcademyGr ");
         ArrayList<ST> STList = new ArrayList();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
+            System.out.print("get getListVirtGRbyAcademyGr ");
             //возвращает студентов в Академ группе
             PreparedStatement ps1 = c1.prepareStatement("" +
                     "SELECT t5.ST1, ST2, ST3, ST4\n" +
@@ -68,7 +72,7 @@ public class DAO_VirtGR {
             }
             c1.close();
 
-            for (ST st : STList) {
+            for (final ST st : STList) {
                 try (Connection c2 = DaoFactory.getDataSource().getConnection()) {
                     //возващает группы по ид студенту
                     //and UCXG3 = 0 - вирт групп 1 академ
@@ -86,15 +90,16 @@ public class DAO_VirtGR {
                     ps2.setInt(1, st.getId());
                     ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
-                        st.addVirtGR(rs2.getString("GR3") + rs2.getString("UCX2 "));
+                        st.addVirtGR(rs2.getString("UCX2") + " " + rs2.getString("GR3"));
                     }
                 }//try (Connection c2
             }//for (Integer id : idST )
-
         } catch (SQLException e) {
             System.out.println(e.getLocalizedMessage());
             return null;
         }
+        Date d2 = new Date();
+        System.out.println(" / Затраченое время :" + (d2.getTime() - d1.getTime()) + "мс. Студентов найдено :" + STList.size());
         return STList;
     }
 }

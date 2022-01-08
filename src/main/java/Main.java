@@ -18,6 +18,9 @@ public class Main {
             System.out.println(e.getLocalizedMessage());
             System.out.println("Уже запущен или занят порт");
         }*/
-        ArrayList<ST> stArrayList = DAO_VirtGR.getDaoVirtGR().getListVirtGRbyAcademyGr(896);
+        ArrayList<ST> stArrayList = DAO_VirtGR.getDaoVirtGR().getListVirtGRbyAcademyGr(1553);
+        for (ST st: stArrayList)
+            System.out.print(st.getLastName());
+        System.out.println(stArrayList.size());
     }
 }
