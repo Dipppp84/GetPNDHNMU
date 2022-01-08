@@ -1,6 +1,7 @@
 package DAO;
 
 import entity.PND;
+import entity.ST;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class DAO_VirtGR {
     }
 
 
-    public List<GR> getListAcademyGR(String nameGR) {
+    public ArrayList<GR> getListAcademyGR(String nameGR) {
         System.out.println("getListAcademyGR ");
         ArrayList<GR> GRList = new ArrayList();
         try (Connection c1 = DaoFactory.getDataSource().getConnection()) {
@@ -44,7 +45,7 @@ public class DAO_VirtGR {
         return GRList;
     }
 
-    public List<ST> getListVirtGRbyAcademyGr(int idGR) {
+    public ArrayList<ST> getListVirtGRbyAcademyGr(int idGR) {
         Date d1 = new Date();
         System.out.print("get getListVirtGRbyAcademyGr ");
         ArrayList<ST> STList = new ArrayList();
@@ -97,42 +98,6 @@ public class DAO_VirtGR {
         return STList;
     }
 }
-
-class ST {
-    private Integer id;
-    private String firstName, middleName, lastName;
-    List<String> virtGR = new ArrayList<>();
-
-    public ST(Integer id, String firstName, String middleName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void addVirtGR(String s) {
-        virtGR.add(s);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder svrGR = new StringBuilder();
-        for (String s : virtGR)
-            svrGR.append(s);
-        return "ST{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", virtGR=" + svrGR +
-                '}';
-    }
-}
-
 
 class GR {
     private Integer id;
